@@ -2,7 +2,7 @@
 
 
 #Global variables
-ASSEMBLY=	          #path to transcriptome assembly fasta file (resulting from step 05_2)
+ASSEMBLY=	          #path to transcriptome assembly fasta file (resulting from step 05)
 WORKING_DIRECTORY=	  #path to working/output directory
 INPUT=		          #path to raw fastq files list file
 SCRIPT=                   #path to script directory

@@ -4,7 +4,7 @@ import sys
 #preliminary cmd line : grep ">" longest_orfs.cds | cut -f1 -d " " | cut -f1 -d "." | cut -f2 -d ">" | uniq  > longest_orfs.cds_transcripts_ID.txt
 #cmd line : python 03_2_getFasta.py Trinity.fasta longest_orfs.cds_transcripts_ID.txt  Trinity.predict_orf_m100.fasta
 
-fileIN=open(sys.argv[1], "rU") 	#transcriptome fasta file
+fileIN=open(sys.argv[1], "rU") 	#transcriptome fasta file resulting from step 02
 fileID=open(sys.argv[2], "rU")	#IDs list to get fasta sequence one ID per line
 fileOUT=open(sys.argv[3], "w")	#out file
 
