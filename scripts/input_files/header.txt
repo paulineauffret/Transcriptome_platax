@@ -1,0 +1,7 @@
+#!/bin/bash
+#PBS -q queue
+#PBS -l ncpus=x
+#PBS -l mem=xx
+#PBS -l walltime=24:00:00
+#PBS -o /some/where/over/the/rainbow
+#PBS -e /some/where/over/the/rainbow

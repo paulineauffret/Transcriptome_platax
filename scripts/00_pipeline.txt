@@ -1,0 +1,31 @@
+#1/ QC raw reads
+bash 01_fastqc_raw_reads.sh 
+
+#2/ Transcriptome assembly
+qsub 02_assembly_trinity_PE_norm_trim.qsub
+
+#3/ ORF prediction
+qsub 03_1_predict_orf.qsub
+
+grep ">" longest_orfss.cds | cut -f1 -d " " | cut -f1 -d "." | cut -f2 -d ">" | uniq  > longest_orfs.cds_transcripts_ID.txt
+
+python 03_2_getFasta.py Trinity.fasta longest_orfs.cds_transcripts_ID.txt Trinity.predict_orf_m100.fasta
+
+#4/ Abundance estimation
+bash 04_1_estimate_abundance_per_sample.sh
+
+qsub 04_2_create_abundances_matrix.qsub
+
+#5/ Filtering
+qsub 05_filter_low_expression.qsub
+
+#6/ Remapping samples
+bash 06_remap_assembly.sh
+
+#7/ Filtering bam files
+bash 07_filterbam.sh
+
+#8/ Screening for contamination
+qsub 08_blast_screen_conta.qsub
+
+

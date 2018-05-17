@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#PBS parameters
+
+#Global variables
+ASSEMBLY=					        #path to transcriptome assembly fasta file (resulting from step 03_2)
+TAG="${ASSEMBLY##*/}_create_abundance_matrix_per_sample"
+WORKING_DIRECTORY=					#path to working/output directory
+DATA_DIR=						#path to abundance estimate files directory (isoforms.results files from step 04_1)
+sample1="${DATA_DIR}/B25-13-P-T1_S6_L001/RSEM.isoforms.results"
+sample2="${DATA_DIR}/B25-13-P-T1_S6_L002/RSEM.isoforms.results"
+sample3="${DATA_DIR}/B25-13-P-T1_S6_L003/RSEM.isoforms.results"
+sample4="${DATA_DIR}/B25-13-P-T1_S6_L004/RSEM.isoforms.results"
+sample5="${DATA_DIR}/B25-13-T-T1_S5_L001/RSEM.isoforms.results"
+sample6="${DATA_DIR}/B25-13-T-T1_S5_L002/RSEM.isoforms.results"
+sample7="${DATA_DIR}/B25-13-T-T1_S5_L003/RSEM.isoforms.results"
+sample8="${DATA_DIR}/B25-13-T-T1_S5_L004/RSEM.isoforms.results"
+sample9="${DATA_DIR}/B25-71_S2_L001/RSEM.isoforms.results"
+sample10="${DATA_DIR}/B25-71_S2_L002/RSEM.isoforms.results"
+sample11="${DATA_DIR}/B25-71_S2_L003/RSEM.isoforms.results"
+sample12="${DATA_DIR}/B25-71_S2_L004/RSEM.isoforms.results"
+sample13="${DATA_DIR}/B25-72_S4_L001/RSEM.isoforms.results"
+sample14="${DATA_DIR}/B25-72_S4_L002/RSEM.isoforms.results"
+sample15="${DATA_DIR}/B25-72_S4_L003/RSEM.isoforms.results"
+sample16="${DATA_DIR}/B25-72_S4_L004/RSEM.isoforms.results"
+sample17="${DATA_DIR}/HI.4509.004.Index_25.M11/RSEM.isoforms.results"
+sample18="${DATA_DIR}/HI.4509.005.Index_18.F8/RSEM.isoforms.results"
+#Trinity variables 
+TRINITY_AEM="abundance_estimates_to_matrix.pl"	#path to trinity util directory (.../trinityrnaseq-2.5.1/util/abundance_estimates_to_matrix.pl)
+EST_METHOD="RSEM"
+
+#Create working directory if not existing
+mkdir -p ${WORKING_DIRECTORY}/${TAG}
+
+cd ${WORKING_DIRECTORY}/${TAG}
+
+#Load Trinity environment if needed
+
+#Run trinity abundance_estimates_to_matrix.pl script
+time ${TRINITY_AEM} --est_method $EST_METHOD --gene_trans_map 'none' --name_sample_by_basedir \
+$sample1 $sample2 $sample3 $sample4 $sample5 $sample6 $sample7 $sample8 $sample9 $sample10 $sample11 $sample12 $sample13 $sample14 $sample15 $sample16 $sample17 $sample18
+

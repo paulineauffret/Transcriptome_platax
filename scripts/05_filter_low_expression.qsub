@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#PBS parameters...
+
+#Global variables
+WORKING_DIRECTORY=		#path to working/output directory
+ASSEMBLY=			#path to transcriptome assembly fasta file (resulting from step 03_2)
+MATRIX=				#path to abundance matrix (RSEM.isoform.TPM.not_cross_norm file from 04_2 step)
+
+#Trinity variables
+TRINITY_FLET="filter_low_expr_transcripts.pl"	#path to trinity util filter_low_expr_transcripts.pl script (.../trinityrnaseq-2.5.1/util/filter_low_expr_transcripts.pl)
+TRINITY_STATS="TrinityStats.pl"			#path to trinity util TrinityStats.pl script (.../trinityrnaseq-2.5.1/util/TrinityStats.pl)
+MIN_EXPR=0.5
+
+TAG="${ASSEMBLY##*/}_${MATRIX##*/}_per_sample_filter_low_expr_${MIN_EXPR}_highest_iso_only"
+OUTPUT=${WORKING_DIRECTORY}/${TAG}/${TAG}_filter_low_expression_transcripts.fasta
+
+mkdir -p $WORKING_DIRECTORY/${TAG}
+
+cd $WORKING_DIRECTORY/${TAG}
+
+#Load Trinity environment
+
+time ${TRINITY_FLET} --transcripts $ASSEMBLY --matrix $MATRIX --highest_iso_only --min_expr_any $MIN_EXPR --trinity_mode > $OUTPUT
+
+time ${TRINITY_STATS} ${OUTPUT} > ${WORKING_DIRECTORY}/${TAG}/${TAG}_stats.txt
+
+

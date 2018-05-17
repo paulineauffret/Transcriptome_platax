@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#PBS parameters
+
+#Global variables
+INPUT=			#path to txt file containing list of fastq files
+WORKING_DIRECTORY=	#path to working/output directory
+
+source $INPUT
+
+#Load Trinity environment if needed
+
+#Trinity variables
+TRINITY_EXEC="Trinity" 		#path to Trinity executable (.../trinityrnaseq-2.5.1/Trinity)
+TRINITY_STAT="TrinityStats.pl"	#path to Trinity executable (.../trinityrnaseq-2.5.1/util/TrinityStats.pl)
+SEQ_TYPE="fq"	
+NB_CPU="28"
+MAX_MEM="100G"
+ADAPTERS=			#path to adapters fasta files (TruSeq3-PE-2.fa)
+ADD_PARAMS="--SS_lib_type RF "	#Specify additionnal parameters for Trinity if needed
+
+#Creating working directory if not existing
+mkdir -p $WORKING_DIRECTORY
+
+#Running Trinity
+time $TRINITY_EXEC --seqType $SEQ_TYPE --max_memory $MAX_MEM --left $R1 --right $R2  --CPU $NB_CPU --trimmomatic --quality_trimming_params "ILLUMINACLIP:$ADAPTERS:2:20:10 SLIDINGWINDOW:20:20 LEADING:26 TRAILING:26 MINLEN:36" $ADD_PARAMS --output $WORKING_DIRECTORY --verbose >> $WORKING_DIRECTORY/trinity.log 
+
+# Trinity Stats :
+${TRINITY_STAT} $WORKING_DIRECTORY/Trinity.fasta > $WORKING_DIRECTORY/Trinity.fasta.stats
+
