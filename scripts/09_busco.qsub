@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#PBS parameters...
+
+ASSEMBLY=		#path tp transcriptome assembly (resulting from step 05)
+DB=			#path to metazoa_odb9
+OUTPUT="test_platax"
+
+#Running Busco version 3
+run_BUSCO.py --in $ASSEMBLY --lineage_path $DB --mode transcriptome -c 10 -o $OUTPUT --evalue 1e-3
+
