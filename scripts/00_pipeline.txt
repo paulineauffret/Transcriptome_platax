@@ -25,7 +25,16 @@ bash 06_remap_assembly.sh
 #7/ Filtering bam files
 bash 07_filterbam.sh
 
-#8/ Screening for contamination
+#8/ Screening for adapters contamination
 qsub 08_blast_screen_conta.qsub
+
+#9/ Evaluating transcriptome completeness
+qsub 09_busco.qsub
+
+#10/ Blast transcriptome against nt database
+qsub 10_blast_nt.pbs
+
+#11/ Filter bacteria contamination
+bash 11_filtering_contamination.sh
 
 

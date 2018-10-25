@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#PBS parameters...
+
+#Set working directories
+CB_TAG="conta_transcriptome_platax"
+CB_NAME=$(basename $PBS_JOBNAME)
+CB_TIMESTAMP=$(date +%Y-%m-%d_%Hh%Mm%Ss)
+CB_LOG_FOLDER=$DATAWORK/blast/"$CB_TIMESTAMP"_"$CB_NAME"_"$CB_TAG"
+mkdir -p $CB_LOG_FOLDER
+cp $0 $CB_LOG_FOLDER/$CB_NAME
+
+#Load blast conda environment if needed
+. 
+#Set query and bank
+QUERY=transcriptome_platax_40278.fa
+BANK=..../NCBI_nt/current/NCBI_nt/nt
+
+#Set output
+OUT_FILE=$CB_LOG_FOLDER/output
+
+#Export db
+export BLASTDB=...../NCBI_nt/current/NCBI_nt
+
+#Go blast
+BLAST_ARCHIVE=${OUT_FILE}.asn1
+blastn -query "${QUERY}" -db "${BANK}" -out "${BLAST_ARCHIVE}" -outfmt 11 -max_target_seqs 25 -evalue 1e-4 -num_threads $NCPUS
+
+OUTPUT_FILE=${OUT_FILE}.tax
+BLAST_ARCHIVE=output.asn1	
+BLAST_FORMAT="6 qseqid sseqid slen qcovs pident length mismatch gapopen qstart qend sstar send evalue bitscore staxids sscinames scomnames sblastnames sskingdoms"  
+
+blast_formatter -archive ${BLAST_ARCHIVE} -out ${OUTPUT_FILE} -outfmt "${BLAST_FORMAT}"
+
+
+
